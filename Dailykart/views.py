@@ -1,8 +1,4 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
 def home(request):
-    return HttpResponse("Working Normally")
-
-
-def category(request):
-    return HttpResponse("Working Normally")
+    return render(request,"home.html")
