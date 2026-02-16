@@ -20,3 +20,6 @@ def store(request,category_slug=None):
         }
 
     return render(request,"store/store.html",context)
+
+def product_detail(request):
+    return render("request",)
