@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-gp-4w03e3g47w2xv@u!zxuz=f@f3-$v%ne%jfi-^brgsz@@ra*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["e-commerce-one-kappa-24.vercel.app"]
 
 
 # Application definition
