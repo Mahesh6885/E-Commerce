@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="section-content padding-y" style="min-height:80vh">
+    <div class="card mx-auto shadow-sm border-0" style="max-width: 400px; margin-top: 60px;">
+        <div class="card-body p-4">
+            <h4 class="card-title font-weight-bold mb-1 text-center">Sign In</h4>
+            <p class="text-muted small text-center mb-4">Welcome back to Dailykart</p>
+
+            <form action="{% url 'login' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                    <label class="small font-weight-bold">Email Address</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-envelope text-muted"></i></span>
+                        </div>
+                        <input type="email" class="form-control" placeholder="example@gmail.com" name="email" required>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="small font-weight-bold">Password</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-lock text-muted"></i></span>
+                        </div>
+                        <input type="password" class="form-control" placeholder="Enter password" name="password" required>
+                    </div>
+                </div>
+
+                <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-primary btn-block font-weight-bold py-2 shadow-sm">
+                        Log In
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <p class="text-center mt-4">Don't have an account yet? <a href="{% url 'register' %}" class="font-weight-bold text-primary">Sign up</a></p>
+</section>
+
+{% endblock %}

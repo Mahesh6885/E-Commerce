@@ -1,51 +1,103 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-{% load static %}
 <!-- ========================= SECTION MAIN ========================= -->
 <section class="section-intro padding-y-sm">
-<div class="container">
-
-<div class="intro-banner-wrap">
-	<img src="{% static 'images/banners/cover.jpg' %}" class="img-fluid rounded">
-</div>
-
-</div> <!-- container //  -->
+    <div class="container">
+        <div class="intro-banner-wrap shadow-sm rounded overflow-hidden">
+            <img src="{% static 'images/banners/cover.jpg' %}" class="img-fluid w-100" alt="Dailykart Banner" style="max-height: 420px; object-fit: cover;">
+        </div>
+    </div>
 </section>
 <!-- ========================= SECTION MAIN END// ========================= -->
 
-<!-- ========================= SECTION  ========================= -->
-<section class="section-name padding-y-sm">
-<div class="container">
-
-<header class="section-heading">
-	<a href="{% url 'store' %}" class="btn btn-outline-primary float-right">See all</a>
-	<h3 class="section-title">Popular products</h3>
-</header><!-- sect-heading -->
-
-	
-<div class="row">
-	{% for product in products %}
-	<div class="col-md-3">
-		<div class="card card-product-grid">
-			<a href="{{ product.get_url }}" class="img-wrap"> <img src="{{ product.images.url }}"> </a>
-			<figcaption class="info-wrap">
-				<a href="{{ product.get_url }}" class="title">{{ product.product_name }}</a>
-				<div class="price mt-1">{{ product.prize }}</div> <!-- price-wrap.// -->
-			</figcaption>
-		</div>
-	</div> <!-- col.// -->
-	{% endfor %}
-</div> <!-- row.// -->
-
-</div><!-- container // -->
+<!-- ========================= SECTION VALUE PROPS ========================= -->
+<section class="section-features padding-y-sm">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-6 mb-3 mb-md-0">
+                <article class="card p-3 shadow-sm text-center h-100 border-0 bg-white">
+                    <div class="icon-wrap mb-2 text-primary"><i class="fas fa-truck fa-2x"></i></div>
+                    <h6 class="font-weight-bold mb-1">Fast Delivery</h6>
+                    <p class="text-muted small mb-0">Free shipping on orders over $50</p>
+                </article>
+            </div>
+            <div class="col-md-3 col-6 mb-3 mb-md-0">
+                <article class="card p-3 shadow-sm text-center h-100 border-0 bg-white">
+                    <div class="icon-wrap mb-2 text-success"><i class="fas fa-shield-alt fa-2x"></i></div>
+                    <h6 class="font-weight-bold mb-1">Secure Payments</h6>
+                    <p class="text-muted small mb-0">Credit Card, PayPal & COD</p>
+                </article>
+            </div>
+            <div class="col-md-3 col-6 mb-3 mb-md-0">
+                <article class="card p-3 shadow-sm text-center h-100 border-0 bg-white">
+                    <div class="icon-wrap mb-2 text-warning"><i class="fas fa-undo-alt fa-2x"></i></div>
+                    <h6 class="font-weight-bold mb-1">Easy Returns</h6>
+                    <p class="text-muted small mb-0">30-day hassle-free money back</p>
+                </article>
+            </div>
+            <div class="col-md-3 col-6 mb-3 mb-md-0">
+                <article class="card p-3 shadow-sm text-center h-100 border-0 bg-white">
+                    <div class="icon-wrap mb-2 text-info"><i class="fas fa-headset fa-2x"></i></div>
+                    <h6 class="font-weight-bold mb-1">24/7 Support</h6>
+                    <p class="text-muted small mb-0">Dedicated online assistance</p>
+                </article>
+            </div>
+        </div>
+    </div>
 </section>
-<!-- ========================= SECTION  END// ========================= -->
+<!-- ========================= SECTION VALUE PROPS END ========================= -->
 
+<!-- ========================= POPULAR PRODUCTS ========================= -->
+<section class="section-name padding-y">
+    <div class="container">
+        <header class="section-heading mb-4 d-flex justify-content-between align-items-center border-bottom pb-2">
+            <h3 class="section-title mb-0 font-weight-bold">Popular Products</h3>
+            <a href="{% url 'store' %}" class="btn btn-outline-primary btn-sm">See all products <i class="fa fa-chevron-right ml-1"></i></a>
+        </header>
 
-
-
-
+        <div class="row">
+            {% for product in products %}
+            <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
+                <div class="card card-product-grid shadow-sm h-100 border">
+                    <a href="{{ product.get_url }}" class="img-wrap position-relative">
+                        {% if product.stock <= 0 %}
+                        <span class="badge badge-danger position-absolute" style="top: 10px; left: 10px;">Out of stock</span>
+                        {% endif %}
+                        <img src="{{ product.images.url }}" alt="{{ product.product_name }}">
+                    </a>
+                    <figcaption class="info-wrap p-3 d-flex flex-column justify-content-between">
+                        <div>
+                            <small class="text-muted text-uppercase">{{ product.category.category_name }}</small>
+                            <a href="{{ product.get_url }}" class="title text-truncate d-block font-weight-bold mt-1 text-dark" title="{{ product.product_name }}">
+                                {{ product.product_name }}
+                            </a>
+                            <div class="rating-star small my-1">
+                                <span>
+                                    <i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview >= 0.5 and product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                    <i class="fa fa-star{% if product.averageReview < 1.5 %}-o{% elif product.averageReview >= 1.5 and product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                    <i class="fa fa-star{% if product.averageReview < 2.5 %}-o{% elif product.averageReview >= 2.5 and product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                    <i class="fa fa-star{% if product.averageReview < 3.5 %}-o{% elif product.averageReview >= 3.5 and product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                    <i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                </span>
+                                <span class="text-muted ml-1">({{ product.countReview }})</span>
+                            </div>
+                        </div>
+                        <div class="mt-2 pt-2 border-top d-flex justify-content-between align-items-center">
+                            <span class="price font-weight-bold text-primary h5 mb-0">${{ product.price }}</span>
+                            <a href="{{ product.get_url }}" class="btn btn-sm btn-outline-primary">View</a>
+                        </div>
+                    </figcaption>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">No products available at this time.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!-- ========================= POPULAR PRODUCTS END ========================= -->
 {% endblock %}
-</body>
-</html>

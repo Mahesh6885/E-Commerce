@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="section-content padding-y" style="min-height:80vh">
+    <div class="card mx-auto shadow-sm border-0" style="max-width: 520px; margin-top: 40px;">
+        <article class="card-body p-4">
+            <header class="mb-4 text-center">
+                <h4 class="card-title font-weight-bold">Create an Account</h4>
+                <p class="text-muted small">Join Dailykart to track orders, save addresses, and more.</p>
+            </header>
+
+            <form action="{% url 'register' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="col form-group">
+                        <label class="small font-weight-bold">First Name</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="col form-group">
+                        <label class="small font-weight-bold">Last Name</label>
+                        {{ form.last_name }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="small font-weight-bold">Email Address</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="small font-weight-bold">Phone Number</label>
+                        {{ form.phone_number }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="small font-weight-bold">Password</label>
+                        {{ form.password }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="small font-weight-bold">Repeat Password</label>
+                        {{ form.confirm_password }}
+                    </div>
+                </div>
+
+                <div class="form-group mt-3">
+                    <button type="submit" class="btn btn-primary btn-block font-weight-bold py-2 shadow-sm">
+                        Register Account
+                    </button>
+                </div>
+            </form>
+        </article>
+    </div>
+
+    <p class="text-center mt-4">Already have an account? <a href="{% url 'login' %}" class="font-weight-bold text-primary">Sign In</a></p>
+</section>
+
+{% endblock %}

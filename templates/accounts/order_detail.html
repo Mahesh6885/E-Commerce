@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="section-content padding-y bg">
+    <div class="container">
+        <div class="row">
+            {% include 'includes/dashboard_sidebar.html' %}
+
+            <main class="col-md-9">
+                <article class="card shadow-sm border-0 invoice-box p-4">
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+                        <div>
+                            <h4 class="font-weight-bold mb-1">Order #{{ order.order_number }}</h4>
+                            <small class="text-muted">Placed on {{ order.created_at|date:"F d, Y \a\\t h:i A" }}</small>
+                        </div>
+                        <div class="text-right">
+                            <span class="badge badge-success px-3 py-2 font-weight-bold mr-2">{{ order.status }}</span>
+                            <button onclick="window.print()" class="btn btn-sm btn-outline-secondary d-print-none">
+                                <i class="fa fa-print mr-1"></i> Print
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <h6 class="text-muted small text-uppercase font-weight-bold">Shipping Address:</h6>
+                            <p class="font-weight-bold mb-1 text-dark">{{ order.full_name }}</p>
+                            <p class="text-muted small mb-1">{{ order.full_address }}</p>
+                            <p class="text-muted small mb-1">{{ order.city }}, {{ order.state }} - {{ order.country }}</p>
+                            <p class="text-muted small mb-0">{{ order.email }} | {{ order.phone }}</p>
+                        </div>
+                        <div class="col-md-6 text-md-right">
+                            <h6 class="text-muted small text-uppercase font-weight-bold">Payment Information:</h6>
+                            <p class="font-weight-bold mb-1 text-dark">{{ order.payment.payment_method|default:"Credit / Debit Card" }}</p>
+                            <p class="text-muted small mb-1">Transaction ID: {{ order.payment.payment_id|default:"N/A" }}</p>
+                            <p class="text-muted small mb-0">Status: <strong class="text-success">{{ order.payment.status|default:"PAID" }}</strong></p>
+                        </div>
+                    </div>
+
+                    <!-- Items Table -->
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered">
+                            <thead class="bg-light small text-uppercase text-muted">
+                                <tr>
+                                    <th class="py-2">Product</th>
+                                    <th class="text-center py-2" style="width: 100px;">Qty</th>
+                                    <th class="text-right py-2" style="width: 130px;">Price</th>
+                                    <th class="text-right py-2" style="width: 130px;">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order_detail %}
+                                <tr>
+                                    <td class="py-2">
+                                        <a href="{{ item.product.get_url }}" class="font-weight-bold text-dark">{{ item.product.product_name }}</a>
+                                        {% if item.variations.all %}
+                                        <div class="small text-muted">
+                                            {% for v in item.variations.all %}
+                                            {{ v.variation_category|capfirst }}: {{ v.variation_value|capfirst }}{% if not forloop.last %}, {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center py-2 align-middle">{{ item.quantity }}</td>
+                                    <td class="text-right py-2 align-middle">${{ item.product_price }}</td>
+                                    <td class="text-right py-2 align-middle font-weight-bold">${{ item.sub_total }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="3" class="text-right border-top-0">Subtotal:</th>
+                                    <td class="text-right font-weight-bold border-top-0">${{ subtotal }}</td>
+                                </tr>
+                                <tr>
+                                    <th colspan="3" class="text-right">Tax (2%):</th>
+                                    <td class="text-right text-muted">${{ order.tax }}</td>
+                                </tr>
+                                <tr class="bg-light">
+                                    <th colspan="3" class="text-right h6 font-weight-bold mb-0">Total:</th>
+                                    <td class="text-right text-primary h6 font-weight-bold mb-0">${{ order.order_total }}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-2">
+                        <a href="{% url 'my_orders' %}" class="btn btn-sm btn-outline-primary d-print-none">
+                            <i class="fa fa-arrow-left mr-1"></i> Back to Orders
+                        </a>
+                        <small class="text-muted">Thank you for your business with Dailykart!</small>
+                    </div>
+                </article>
+            </main>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

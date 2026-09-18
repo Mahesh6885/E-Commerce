@@ -1,0 +1,36 @@
+<aside class="col-md-3 mb-4 mb-md-0">
+    <!-- User Profile Card -->
+    <div class="card shadow-sm border-0 mb-3 text-center p-3">
+        <div class="mb-2">
+            {% if userprofile.profile_picture %}
+            <img src="{{ userprofile.profile_picture.url }}" class="rounded-circle shadow-sm" style="width: 80px; height: 80px; object-fit: cover;">
+            {% else %}
+            <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 80px; height: 80px; font-size: 32px;">
+                {{ user.first_name|first|upper }}
+            </div>
+            {% endif %}
+        </div>
+        <h6 class="font-weight-bold mb-0 text-dark">{{ user.full_name|default:user.user_name }}</h6>
+        <small class="text-muted">{{ user.email }}</small>
+    </div>
+
+    <!-- Navigation List -->
+    <ul class="list-group shadow-sm border-0">
+        <a class="list-group-item list-group-item-action {% if '/dashboard/' in request.path %}active font-weight-bold{% endif %}" href="{% url 'dashboard' %}">
+            <i class="fa fa-tachometer-alt mr-2"></i> Dashboard Overview
+        </a>
+        <a class="list-group-item list-group-item-action {% if '/my_orders/' in request.path or '/order_detail/' in request.path %}active font-weight-bold{% endif %}" href="{% url 'my_orders' %}">
+            <i class="fa fa-shopping-bag mr-2"></i> My Orders
+        </a>
+        <a class="list-group-item list-group-item-action {% if '/edit_profile/' in request.path %}active font-weight-bold{% endif %}" href="{% url 'edit_profile' %}">
+            <i class="fa fa-user-edit mr-2"></i> Edit Profile
+        </a>
+        <a class="list-group-item list-group-item-action {% if '/change_password/' in request.path %}active font-weight-bold{% endif %}" href="{% url 'change_password' %}">
+            <i class="fa fa-lock mr-2"></i> Change Password
+        </a>
+    </ul>
+    <br>
+    <a class="btn btn-light btn-block border text-danger" href="{% url 'logout' %}">
+        <i class="fa fa-power-off mr-2"></i> <span class="text">Log out</span>
+    </a>
+</aside>

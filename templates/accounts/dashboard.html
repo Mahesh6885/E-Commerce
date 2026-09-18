@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="section-content padding-y bg">
+    <div class="container">
+        <div class="row">
+            {% include 'includes/dashboard_sidebar.html' %}
+
+            <main class="col-md-9">
+                <!-- Welcome Card -->
+                <article class="card shadow-sm border-0 mb-4 bg-primary text-white">
+                    <div class="card-body p-4 d-flex justify-content-between align-items-center">
+                        <div>
+                            <h4 class="font-weight-bold mb-1">Hello, {{ user.first_name|default:user.user_name }}!</h4>
+                            <p class="mb-0 text-white-50">Welcome to your personal account dashboard. Manage your orders and profile settings.</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="badge badge-light text-primary px-3 py-2 font-weight-bold">Customer</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Stats Overview Row -->
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <div class="card shadow-sm border-0 p-3 h-100">
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle bg-light text-primary p-3 mr-3">
+                                    <i class="fa fa-shopping-bag fa-2x"></i>
+                                </div>
+                                <div>
+                                    <h6 class="text-muted small mb-0">Total Orders Placed</h6>
+                                    <h3 class="font-weight-bold mb-0">{{ orders_count }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card shadow-sm border-0 p-3 h-100">
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle bg-light text-success p-3 mr-3">
+                                    <i class="fa fa-map-marker-alt fa-2x"></i>
+                                </div>
+                                <div>
+                                    <h6 class="text-muted small mb-0">Saved Location</h6>
+                                    <h6 class="font-weight-bold mb-0 text-dark">
+                                        {% if userprofile.city %}{{ userprofile.city }}, {{ userprofile.country }}{% else %}No address saved yet{% endif %}
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Orders Card -->
+                <article class="card shadow-sm border-0">
+                    <header class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                        <h5 class="font-weight-bold mb-0"><i class="fa fa-clock text-primary mr-2"></i> Recent Orders</h5>
+                        {% if orders %}
+                        <a href="{% url 'my_orders' %}" class="btn btn-sm btn-outline-primary">View All</a>
+                        {% endif %}
+                    </header>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="bg-light text-muted small text-uppercase">
+                                <tr>
+                                    <th class="py-3">Order #</th>
+                                    <th class="py-3">Date</th>
+                                    <th class="py-3">Total Amount</th>
+                                    <th class="py-3">Status</th>
+                                    <th class="py-3 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                <tr>
+                                    <td class="font-weight-bold text-primary align-middle">#{{ order.order_number }}</td>
+                                    <td class="align-middle text-muted small">{{ order.created_at|date:"M d, Y" }}</td>
+                                    <td class="font-weight-bold align-middle">${{ order.order_total }}</td>
+                                    <td class="align-middle">
+                                        <span class="badge badge-success px-2 py-1">{{ order.status }}</span>
+                                    </td>
+                                    <td class="text-right align-middle">
+                                        <a href="{% url 'order_detail' order.order_number %}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fa fa-receipt mr-1"></i> Details
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">
+                                        You haven't placed any orders yet. <a href="{% url 'store' %}" class="text-primary font-weight-bold">Start shopping now!</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+            </main>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

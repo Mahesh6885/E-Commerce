@@ -28,7 +28,9 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
+    "testserver",
     "Maheshwaran6885.pythonanywhere.com",
+    "*",
 ]
 
 
@@ -41,8 +43,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "category","accounts","store",
+    "category",
+    "accounts",
+    "store",
     "carts",
+    "orders",
 ]
 
 MIDDLEWARE = [
@@ -68,10 +73,16 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "category.context_processers.menu_links",
+                "carts.context_processors.counter",
             ],
         },
     },
 ]
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+}
 
 WSGI_APPLICATION = "Dailykart.wsgi.application"
 
